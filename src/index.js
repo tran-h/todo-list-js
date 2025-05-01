@@ -97,7 +97,7 @@ function displayMainContent(project) {
             console.log("task edit btn clicked");
         }
 
-        //TODO: add a delete task button
+        //TODO: add functionality to delete task
         //TODO: add functionality to check off task
 
         div.append(taskPrioColourIndicator);
@@ -164,6 +164,41 @@ deleteProjBtn.onclick = function () {
     else alert("Default project cannot be deleted!");
     displayProjects();
     displayMainContent(defaultProject);
+}
+
+//task related functions
+function clearTaskModalFields() {
+    taskTitle.value = "";
+    taskDesc.value = "";
+    taskDueDate.value = "";
+    taskPrio.selectedIndex = 0;
+}
+
+addTaskBtn.onclick = function () {
+    addTaskModal.style.display = "block";
+}
+
+closeTaskModalSpan.onclick = function () {
+    clearTaskModalFields();
+    addTaskModal.style.display = "none";
+}
+
+cancelTaskBtn.onclick = function () {
+    clearTaskModalFields();
+    addTaskModal.style.display = "none";
+}
+
+submitTaskBtn.onclick = function () {
+    if (taskTitle.value == "" || taskDueDate.value == "" || taskPrio.selectedIndex == 0){
+        alert("Please fill in all the fields");
+        return;
+    }
+
+    const newTask = new Task(taskTitle.value, taskDesc.value, taskDueDate.value, taskPrio.selectedIndex);
+    currentProject.tasks.push(newTask);
+    displayMainContent(currentProject);
+    clearTaskModalFields();
+    addTaskModal.style.display = "none";
 }
 
 displayProjects();
