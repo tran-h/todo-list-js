@@ -25,3 +25,32 @@ const defaultProject = new Project("Default", [
 
 const projects = [defaultProject];
 let currentProject = defaultProject;
+
+//main content
+const projectsDiv = document.querySelector(".projects");
+const addTaskBtn = document.querySelector("#addTaskBtn");
+const deleteProjBtn = document.querySelector("#deleteProjBtn");
+const addProjectBtn = document.querySelector("#addProjectBtn");
+const mainDivTitle = document.querySelector("#main-projectName");
+const tasksList = document.querySelector(".tasksList");
+
+//project modal
+const addProjModal = document.querySelector("#addProjModal");
+const closeProjModalSpan = document.querySelector(".closeProjModal");
+const cancelProjBtn = document.querySelector("#cancelProj");
+const submitProjBtn = document.querySelector("#submitProj");
+
+//project modal field
+const projTitle = document.querySelector("#projTitle");
+
+//task modal
+const addTaskModal = document.querySelector("#addTaskModal");
+const closeTaskModalSpan = document.querySelector(".closeTaskModal");
+const cancelTaskBtn = document.querySelector("#cancelTask");
+const submitTaskBtn = document.querySelector("#submitTask");
+
+//task modal fields
+const taskTitle = document.querySelector("#taskTitle");
+const taskDesc = document.querySelector("#taskDesc");
+const taskDueDate = document.querySelector("#taskDueDate");
+const taskPrio = document.querySelector("#taskPrio");
