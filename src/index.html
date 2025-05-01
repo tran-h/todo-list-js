@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do List - JS</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h1>ToDo List</h1>
+            <div class="projects-header">
+                <h2>Projects</h2>
+                <button id="addProjectBtn">Add</button>
+            </div>
+            <div id="addProjModal" class="modal">
+                <div class="modal-content">
+                    <span class="closeProjModal">&times;</span>
+                    <p>
+                        <label for="projTitle">Project Name: </label>
+                        <input type="text" id="projTitle" name="projTitle">
+                    </p>
+                    <button id="cancelProj">Cancel</button>
+                    <button id="submitProj">Confirm</button>
+                </div>
+            </div>
+            <div class="projects"></div>
+        </div>
+        <div class="main-content">
+            <h1 id="main-projectName"></h1>
+            <div class="main-title-buttons">
+                <button id="addTaskBtn">Add Task</button>
+                <button id="deleteProjBtn">Delete Project</button>
+            </div>
+            <div class="tasksList"></div>
+
+            <div id="addTaskModal" class="modal">
+                <div class="modal-content">
+                    <span class="closeTaskModal">&times;</span>
+                    <p>
+                        <label for="taskTitle">Task: </label>
+                        <input type="text" id="taskTitle" name="taskTitle">
+                    </p>
+                    <p>
+                        <label for="taskDesc">Description: </label>
+                        <textarea id="taskDesc" name="taskDesc" rows="5" cols="33"></textarea>
+                    </p>
+                    <p>
+                        <label for="taskDueDate">Due Date: </label>
+                        <input type="date" id="taskDueDate" name="taskDueDate">
+                    </p>
+                    <p>
+                        <label for="taskPrio">Priority: </label>
+                        <select id="taskPrio" name="taskPrio">
+                            <option value="" selected>Please select an option</option>
+                            <option value="Low">Low</option>
+                            <option value="Med" selected>Med</option>
+                            <option value="High">High</option>
+                        </select>
+                    </p>
+                    <button id="cancelTask">Cancel</button>
+                    <button id="submitTask">Confirm</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>
