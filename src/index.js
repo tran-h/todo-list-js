@@ -85,6 +85,7 @@ function displayMainContent(project) {
                 break;
         }
 
+        //TODO: fix overlapping edit button and position of task description
         div.onclick = function () {
             div.contains(taskDesc) ? taskDesc.remove() : div.append(taskDesc);
         };
@@ -96,6 +97,9 @@ function displayMainContent(project) {
             console.log("task edit btn clicked");
         }
 
+        //TODO: add a delete task button
+        //TODO: add functionality to check off task
+
         div.append(taskPrioColourIndicator);
         div.append(taskTitle);
         div.append(taskDueDate);
@@ -106,6 +110,7 @@ function displayMainContent(project) {
 
 function displayProjects() {
     projectsDiv.innerHTML = "";
+    //TODO: add edit project button to change project name
     for (let p in projects) {
         const newProj = document.createElement("button");
         newProj.id = projects[p].title;
@@ -117,6 +122,48 @@ function displayProjects() {
         });
         projectsDiv.append(newProj);
     }
+}
+//TODO: fix modal styling
+//project related functions
+function clearProjectModalFields() {
+    projTitle.value = "";
+}
+
+addProjectBtn.onclick = function () {
+    addProjModal.style.display = "block";
+}
+
+closeProjModalSpan.onclick = function () {
+    clearProjectModalFields();
+    addProjModal.style.display = "none";
+}
+
+cancelProjBtn.onclick = function () {
+    clearProjectModalFields();
+    addProjModal.style.display = "none";
+}
+
+submitProjBtn.onclick = function () {
+    if (projTitle.value == ""){
+        console.log("please fill in the required fields");
+        return;
+    }
+    const projectToBeAdded = new Project(projTitle.value, []);
+    projects.push(projectToBeAdded);
+    clearProjectModalFields();
+    addProjModal.style.display = "none";
+    displayProjects();
+    console.log(projects);
+}
+
+deleteProjBtn.onclick = function () {
+    if (currentProject != defaultProject) {
+        projects.splice(projects.indexOf(currentProject), 1);
+        currentProject = defaultProject;
+    }
+    else alert("Default project cannot be deleted!");
+    displayProjects();
+    displayMainContent(defaultProject);
 }
 
 displayProjects();
