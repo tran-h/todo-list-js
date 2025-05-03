@@ -3,6 +3,18 @@
   padding: 0;
 }
 
+button {
+  background-color: #c2c9e0;
+  border: none;
+  border-radius: 10px;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #888;
+}
+
 .container {
   display: flex;
   height: 100vh;
@@ -45,24 +57,22 @@
 .projects {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
-.projects button {
-  background-color: inherit;
-  border: none;
-  cursor: pointer;
-  padding: 1rem 2rem;
-  text-align: center;
-}
-
-.projects button:hover {
-  background-color: #213679;
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
 }
 
 .project {
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  grid-column: 1 / span 4;
+}
+
+.editProjBtn {
+  grid-column: 6;
 }
 
 /* Modals */
@@ -84,7 +94,11 @@
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  width: 30%;
+}
+
+.modal-content p {
+  padding: 1rem;
 }
 
 .closeTaskModal {
@@ -125,9 +139,11 @@
 .task {
   display: flex;
   justify-content: space-between;
+  /* align-items: center; */
   background-color: #c2c9e0;
 }
 
 div.task:hover {
   opacity: 0.6;
+  cursor: pointer;
 }

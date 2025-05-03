@@ -1,30 +1,8 @@
 import "./styles.css";
-import { format, add } from "date-fns";
+import * as ProjectModule from "./project.js";
+import * as TaskModule from "./task.js";
 
-class Task {
-    constructor(title, desc, dueDate, prio) {
-        this.title = title;
-        this.desc = desc;
-        this.dueDate = format(add(dueDate, { days: 1 }), 'E MMM dd, yyyy'); //add a day because date-fns returns previous day
-        this.prio = prio;
-    }
-}
-
-class Project {
-    constructor(title, tasks) {
-        this.title = title;
-        this.tasks = tasks;
-    }
-}
-
-const defaultProject = new Project("Default", [
-    new Task("Task 1", "This is an example task", format(new Date(), 'E MMM dd, yyyy'), 1),
-    new Task("Task 2", "This is an example task", format(new Date(), 'E MMM dd, yyyy'), 2),
-    new Task("Task 3", "This is an example task", format(new Date(), 'E MMM dd, yyyy'), 3)
-]);
-
-const projects = [defaultProject];
-let currentProject = defaultProject;
+let currentProject = ProjectModule.projects[0];
 
 //main content
 const projectsDiv = document.querySelector(".projects");
@@ -59,19 +37,19 @@ function displayMainContent(project) {
     mainDivTitle.textContent = project.title;
     tasksList.textContent = "";
 
-    for (let i in project.tasks) {
+    for (let taskIndex in project.tasks) {
         const div = document.createElement("div");
         div.classList.add("task");
         const taskTitle = document.createElement("p");
         const taskDesc = document.createElement("p");
         const taskDueDate = document.createElement("p");
         const taskPrioColourIndicator = document.createElement("div");
-        taskTitle.textContent = project.tasks[i].title;
-        taskDesc.textContent = project.tasks[i].desc;
-        taskDueDate.textContent = `Due Date: ${project.tasks[i].dueDate}`;
-        taskPrioColourIndicator.style.width = "0.5rem"
+        taskPrioColourIndicator.style.width = "0.5rem";
+        taskTitle.textContent = project.tasks[taskIndex].title;
+        taskDesc.textContent = project.tasks[taskIndex].desc;
+        taskDueDate.textContent = `Due Date: ${project.tasks[taskIndex].dueDate}`;
 
-        switch (project.tasks[i].prio) {
+        switch (project.tasks[taskIndex].prio) {
             case 1:
                 taskPrioColourIndicator.style.backgroundColor = "green";
                 break;
@@ -110,19 +88,32 @@ function displayMainContent(project) {
 
 function displayProjects() {
     projectsDiv.innerHTML = "";
-    //TODO: add edit project button to change project name
-    for (let p in projects) {
-        const newProj = document.createElement("button");
-        newProj.id = projects[p].title;
-        newProj.textContent = projects[p].title;
-        newProj.classList.add("project");
-        newProj.addEventListener("click", function () {
-            displayMainContent(projects[p]);
-            currentProject = projects[p];
-        });
-        projectsDiv.append(newProj);
+    const projs = ProjectModule.projects;
+    for (let p in projs) {
+        const newProjDiv = document.createElement("div");
+        newProjDiv.classList.add("projectGrid");
+        const newProjBtn = document.createElement("button");
+        newProjBtn.textContent = projs[p].title;
+        newProjBtn.classList.add("project");
+        newProjBtn.onclick = function () {
+            currentProject = projs[p];
+            displayMainContent(currentProject);
+            displayProjects();
+        }
+        const editProjBtn = document.createElement("button");
+        editProjBtn.classList.add("editProjBtn");
+        editProjBtn.textContent = "Edit";
+        editProjBtn.onclick = function () {
+            ProjectModule.editProject(projs[p].id, "temp title");//TODO: display modal to edit title here
+            displayProjects();
+            displayMainContent(currentProject);
+        }
+        newProjDiv.append(newProjBtn);
+        if (projs[p].id != "project0") newProjDiv.append(editProjBtn);
+        projectsDiv.append(newProjDiv);
     }
 }
+
 //TODO: fix modal styling
 //project related functions
 function clearProjectModalFields() {
@@ -144,26 +135,18 @@ cancelProjBtn.onclick = function () {
 }
 
 submitProjBtn.onclick = function () {
-    if (projTitle.value == ""){
-        console.log("please fill in the required fields");
-        return;
-    }
-    const projectToBeAdded = new Project(projTitle.value, []);
-    projects.push(projectToBeAdded);
+    currentProject = ProjectModule.addProject(projTitle.value);
     clearProjectModalFields();
     addProjModal.style.display = "none";
     displayProjects();
-    console.log(projects);
+    displayMainContent(currentProject);
 }
 
 deleteProjBtn.onclick = function () {
-    if (currentProject != defaultProject) {
-        projects.splice(projects.indexOf(currentProject), 1);
-        currentProject = defaultProject;
-    }
-    else alert("Default project cannot be deleted!");
+    ProjectModule.removeProject(currentProject.id);
+    currentProject = ProjectModule.projects[0];
     displayProjects();
-    displayMainContent(defaultProject);
+    displayMainContent(currentProject);
 }
 
 //task related functions
@@ -189,17 +172,15 @@ cancelTaskBtn.onclick = function () {
 }
 
 submitTaskBtn.onclick = function () {
-    if (taskTitle.value == "" || taskDueDate.value == "" || taskPrio.selectedIndex == 0){
+    if (taskTitle.value == "" || taskDueDate.value == "" || taskPrio.selectedIndex == 0) {
         alert("Please fill in all the fields");
         return;
     }
-
-    const newTask = new Task(taskTitle.value, taskDesc.value, taskDueDate.value, taskPrio.selectedIndex);
-    currentProject.tasks.push(newTask);
+    TaskModule.addTask(currentProject.id, taskTitle.value, taskDesc.value, taskDueDate.value, taskPrio.selectedIndex);
     displayMainContent(currentProject);
     clearTaskModalFields();
     addTaskModal.style.display = "none";
 }
 
 displayProjects();
-displayMainContent(defaultProject);
+displayMainContent(currentProject);
