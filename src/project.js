@@ -69,8 +69,15 @@ function removeProject(projId) {
 }
 
 function editProject(projId, title) {
-    const project = getProject(projId);
-    project.title = title;
+    if (title == "") {
+        alert("Please enter a project name");
+        return false;
+    }
+    else {
+        const project = getProject(projId);
+        project.title = title;
+        return true;
+    }
 }
 
 function getProjectIndex(projId) {

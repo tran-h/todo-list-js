@@ -115,15 +115,18 @@ button:hover {
   cursor: pointer;
 }
 
-.closeProjModal {
+#closeAddProjModal,
+#closeEditProjModal {
   color: #aaa;
   float: right;
   font-size: 28px;
   font-weight: bold;
 }
 
-.closeProjModal:hover,
-.closeProjModal:focus {
+#closeAddProjModal:hover,
+#closeAddProjModal:focus,
+#closeEditProjModal:hover,
+#closeEditProjModal:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;

@@ -17,13 +17,24 @@
             </div>
             <div id="addProjModal" class="modal">
                 <div class="modal-content">
-                    <span class="closeProjModal">&times;</span>
+                    <span id="closeAddProjModal">&times;</span>
                     <p>
-                        <label for="projTitle">Project Name: </label>
-                        <input type="text" id="projTitle" name="projTitle">
+                        <label for="projTitleToAdd">Project Name: </label>
+                        <input type="text" id="projTitleToAdd" name="projTitleToAdd">
                     </p>
-                    <button id="cancelProj">Cancel</button>
-                    <button id="submitProj">Confirm</button>
+                    <button id="cancelAddProjModalBtn">Cancel</button>
+                    <button id="submitAddProjModalBtn">Confirm</button>
+                </div>
+            </div>
+            <div id="editProjModal" class="modal">
+                <div class="modal-content">
+                    <span id="closeEditProjModal">&times;</span>
+                    <p>
+                        <label for="projTitleToEdit">New Project Name: </label>
+                        <input type="text" id="projTitleToEdit" name="projTitleToEdit">
+                    </p>
+                    <button id="cancelEditProjModalBtn">Cancel</button>
+                    <button id="submitEditProjModalBtn">Confirm</button>
                 </div>
             </div>
             <div class="projects"></div>
@@ -61,7 +72,7 @@
                         </select>
                     </p>
                     <button id="cancelTask">Cancel</button>
-                    <button id="submitTask">Confirm</button>
+                    <button id="addTaskModalBtn">Confirm</button>
                 </div>
             </div>
 

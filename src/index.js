@@ -3,6 +3,7 @@ import * as ProjectModule from "./project.js";
 import * as TaskModule from "./task.js";
 
 let currentProject = ProjectModule.projects[0];
+let currentEditId;
 
 //main content
 const projectsDiv = document.querySelector(".projects");
@@ -12,20 +13,27 @@ const addProjectBtn = document.querySelector("#addProjectBtn");
 const mainDivTitle = document.querySelector("#main-projectName");
 const tasksList = document.querySelector(".tasksList");
 
-//project modal
+//add project modal
 const addProjModal = document.querySelector("#addProjModal");
-const closeProjModalSpan = document.querySelector(".closeProjModal");
-const cancelProjBtn = document.querySelector("#cancelProj");
-const submitProjBtn = document.querySelector("#submitProj");
+const closeAddProjModalSpan = document.querySelector("#closeAddProjModal");
+const cancelAddProjModalBtn = document.querySelector("#cancelAddProjModalBtn");
+const submitAddProjModalBtn = document.querySelector("#submitAddProjModalBtn");
 
-//project modal field
-const projTitle = document.querySelector("#projTitle");
+//edit project modal
+const editProjModal = document.querySelector("#editProjModal");
+const closeEditProjModalSpan = document.querySelector("#closeEditProjModal");
+const cancelEditProjModalBtn = document.querySelector("#cancelEditProjModalBtn");
+const submitEditProjModalBtn = document.querySelector("#submitEditProjModalBtn");
+
+//project modal fields
+const projTitleToAdd = document.querySelector("#projTitleToAdd");
+const projTitleToEdit = document.querySelector("#projTitleToEdit");
 
 //task modal
 const addTaskModal = document.querySelector("#addTaskModal");
 const closeTaskModalSpan = document.querySelector(".closeTaskModal");
 const cancelTaskBtn = document.querySelector("#cancelTask");
-const submitTaskBtn = document.querySelector("#submitTask");
+const addTaskModalBtn = document.querySelector("#addTaskModalBtn");
 
 //task modal fields
 const taskTitle = document.querySelector("#taskTitle");
@@ -68,10 +76,10 @@ function displayMainContent(project) {
             div.contains(taskDesc) ? taskDesc.remove() : div.append(taskDesc);
         };
 
-        const editBtn = document.createElement("button");
-        editBtn.textContent = "Edit";
-        editBtn.onclick = function () {
-            //TODO: reuse task modal to edit fields
+        const editTaskBtn = document.createElement("button");
+        editTaskBtn.textContent = "Edit";
+        editTaskBtn.onclick = function () {
+            //TODO: add modal to edit task fields
             console.log("task edit btn clicked");
         }
 
@@ -81,7 +89,7 @@ function displayMainContent(project) {
         div.append(taskPrioColourIndicator);
         div.append(taskTitle);
         div.append(taskDueDate);
-        div.append(editBtn);
+        div.append(editTaskBtn);
         tasksList.append(div);
     }
 }
@@ -104,9 +112,8 @@ function displayProjects() {
         editProjBtn.classList.add("editProjBtn");
         editProjBtn.textContent = "Edit";
         editProjBtn.onclick = function () {
-            ProjectModule.editProject(projs[p].id, "temp title");//TODO: display modal to edit title here
-            displayProjects();
-            displayMainContent(currentProject);
+            currentEditId = projs[p].id;
+            editProjModal.style.display = "block";
         }
         newProjDiv.append(newProjBtn);
         if (projs[p].id != "project0") newProjDiv.append(editProjBtn);
@@ -117,29 +124,47 @@ function displayProjects() {
 //TODO: fix modal styling
 //project related functions
 function clearProjectModalFields() {
-    projTitle.value = "";
+    projTitleToAdd.value = "";
+    projTitleToEdit.value = "";
 }
 
-addProjectBtn.onclick = function () {
-    addProjModal.style.display = "block";
-}
+addProjectBtn.onclick = function () { addProjModal.style.display = "block"; }
 
-closeProjModalSpan.onclick = function () {
+closeAddProjModalSpan.onclick = function () {
     clearProjectModalFields();
     addProjModal.style.display = "none";
 }
 
-cancelProjBtn.onclick = function () {
+closeEditProjModalSpan.onclick = function () {
+    clearProjectModalFields();
+    editProjModal.style.display = "none";
+}
+
+cancelAddProjModalBtn.onclick = function () {
     clearProjectModalFields();
     addProjModal.style.display = "none";
 }
 
-submitProjBtn.onclick = function () {
-    currentProject = ProjectModule.addProject(projTitle.value);
+cancelEditProjModalBtn.onclick = function () {
+    clearProjectModalFields();
+    editProjModal.style.display = "none";
+}
+
+submitAddProjModalBtn.onclick = function () {
+    currentProject = ProjectModule.addProject(projTitleToAdd.value);
     clearProjectModalFields();
     addProjModal.style.display = "none";
     displayProjects();
     displayMainContent(currentProject);
+}
+
+submitEditProjModalBtn.onclick = function () {
+    if (ProjectModule.editProject(currentEditId, projTitleToEdit.value)) {
+        clearProjectModalFields();
+        editProjModal.style.display = "none";
+        displayProjects();
+        displayMainContent(currentProject);
+    }
 }
 
 deleteProjBtn.onclick = function () {
@@ -171,7 +196,7 @@ cancelTaskBtn.onclick = function () {
     addTaskModal.style.display = "none";
 }
 
-submitTaskBtn.onclick = function () {
+addTaskModalBtn.onclick = function () {
     if (taskTitle.value == "" || taskDueDate.value == "" || taskPrio.selectedIndex == 0) {
         alert("Please fill in all the fields");
         return;
