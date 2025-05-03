@@ -30,7 +30,7 @@ function editTask(projId, taskId, title, desc, date, prio) {
     const task = getTask(projId, taskId);
     task.title = title;
     task.desc = desc;
-    task.dueDate = date;
+    task.dueDate = format(add(date, { days: 1 }), 'E MMM dd, yyyy');
     task.prio = prio;
 }
 

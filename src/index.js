@@ -3,7 +3,7 @@ import * as ProjectModule from "./project.js";
 import * as TaskModule from "./task.js";
 
 let currentProject = ProjectModule.projects[0];
-let currentEditId;
+let currentProjEditId, currentTaskEditId;
 
 //main content
 const projectsDiv = document.querySelector(".projects");
@@ -31,15 +31,25 @@ const projTitleToEdit = document.querySelector("#projTitleToEdit");
 
 //task modal
 const addTaskModal = document.querySelector("#addTaskModal");
-const closeTaskModalSpan = document.querySelector(".closeTaskModal");
-const cancelTaskBtn = document.querySelector("#cancelTask");
-const addTaskModalBtn = document.querySelector("#addTaskModalBtn");
+const closeAddTaskModalSpan = document.querySelector("#closeAddTaskModalSpan");
+const cancelAddTaskModalBtn = document.querySelector("#cancelAddTaskModalBtn");
+const submitAddTaskModalBtn = document.querySelector("#submitAddTaskModalBtn");
+
+//task modal
+const editTaskModal = document.querySelector("#editTaskModal");
+const closeEditTaskModalSpan = document.querySelector("#closeEditTaskModalSpan");
+const cancelEditTaskModalBtn = document.querySelector("#cancelEditTaskModalBtn");
+const submitEditTaskModalBtn = document.querySelector("#submitEditTaskModalBtn");
 
 //task modal fields
-const taskTitle = document.querySelector("#taskTitle");
-const taskDesc = document.querySelector("#taskDesc");
-const taskDueDate = document.querySelector("#taskDueDate");
-const taskPrio = document.querySelector("#taskPrio");
+const taskTitleToAdd = document.querySelector("#taskTitleToAdd");
+const taskDescToAdd = document.querySelector("#taskDescToAdd");
+const taskDueDateToAdd = document.querySelector("#taskDueDateToAdd");
+const taskPrioToAdd = document.querySelector("#taskPrioToAdd");
+const taskTitleToEdit = document.querySelector("#taskTitleToEdit");
+const taskDescToEdit = document.querySelector("#taskDescToEdit");
+const taskDueDateToEdit = document.querySelector("#taskDueDateToEdit");
+const taskPrioToEdit = document.querySelector("#taskPrioToEdit");
 
 function displayMainContent(project) {
     mainDivTitle.textContent = project.title;
@@ -79,8 +89,10 @@ function displayMainContent(project) {
         const editTaskBtn = document.createElement("button");
         editTaskBtn.textContent = "Edit";
         editTaskBtn.onclick = function () {
-            //TODO: add modal to edit task fields
-            console.log("task edit btn clicked");
+            currentTaskEditId = project.tasks[taskIndex].id;
+            taskTitleToEdit.value = project.tasks[taskIndex].title;
+            taskDescToEdit.value = project.tasks[taskIndex].desc;
+            editTaskModal.style.display = "block";
         }
 
         //TODO: add functionality to delete task
@@ -112,7 +124,7 @@ function displayProjects() {
         editProjBtn.classList.add("editProjBtn");
         editProjBtn.textContent = "Edit";
         editProjBtn.onclick = function () {
-            currentEditId = projs[p].id;
+            currentProjEditId = projs[p].id;
             editProjModal.style.display = "block";
         }
         newProjDiv.append(newProjBtn);
@@ -159,7 +171,7 @@ submitAddProjModalBtn.onclick = function () {
 }
 
 submitEditProjModalBtn.onclick = function () {
-    if (ProjectModule.editProject(currentEditId, projTitleToEdit.value)) {
+    if (ProjectModule.editProject(currentProjEditId, projTitleToEdit.value)) {
         clearProjectModalFields();
         editProjModal.style.display = "none";
         displayProjects();
@@ -176,35 +188,77 @@ deleteProjBtn.onclick = function () {
 
 //task related functions
 function clearTaskModalFields() {
-    taskTitle.value = "";
-    taskDesc.value = "";
-    taskDueDate.value = "";
-    taskPrio.selectedIndex = 0;
+    taskTitleToAdd.value = "";
+    taskDescToAdd.value = "";
+    taskDueDateToAdd.value = "";
+    taskPrioToAdd.selectedIndex = 0;
+    taskTitleToEdit.value = "";
+    taskDescToEdit.value = "";
+    taskDueDateToEdit.value = "";
+    taskPrioToEdit.selectedIndex = 0;
 }
 
-addTaskBtn.onclick = function () {
-    addTaskModal.style.display = "block";
-}
+addTaskBtn.onclick = function () { addTaskModal.style.display = "block"; }
 
-closeTaskModalSpan.onclick = function () {
+closeAddTaskModalSpan.onclick = function () {
     clearTaskModalFields();
     addTaskModal.style.display = "none";
 }
 
-cancelTaskBtn.onclick = function () {
+closeEditTaskModalSpan.onclick = function () {
+    clearTaskModalFields();
+    editTaskModal.style.display = "none";
+}
+
+cancelAddTaskModalBtn.onclick = function () {
     clearTaskModalFields();
     addTaskModal.style.display = "none";
 }
 
-addTaskModalBtn.onclick = function () {
-    if (taskTitle.value == "" || taskDueDate.value == "" || taskPrio.selectedIndex == 0) {
+cancelEditTaskModalBtn.onclick = function () {
+    clearTaskModalFields();
+    editTaskModal.style.display = "none";
+}
+
+submitAddTaskModalBtn.onclick = function () {
+    if (taskTitleToAdd.value == ""
+        || taskDescToAdd.value == ""
+        || taskDueDateToAdd.value == ""
+        || taskPrioToAdd.selectedIndex == 0) {
         alert("Please fill in all the fields");
         return;
     }
-    TaskModule.addTask(currentProject.id, taskTitle.value, taskDesc.value, taskDueDate.value, taskPrio.selectedIndex);
-    displayMainContent(currentProject);
+    TaskModule.addTask(
+        currentProject.id,
+        taskTitleToAdd.value,
+        taskDescToAdd.value,
+        taskDueDateToAdd.value,
+        taskPrioToAdd.selectedIndex
+    );
     clearTaskModalFields();
     addTaskModal.style.display = "none";
+    displayMainContent(currentProject);
+}
+
+submitEditTaskModalBtn.onclick = function () {
+    if (taskTitleToEdit.value == ""
+        || taskDescToEdit.value == ""
+        || taskDueDateToEdit.value == ""
+        || taskPrioToEdit.selectedIndex == 0) {
+        alert("Please fill in all the fields");
+        return;
+    }
+    TaskModule.editTask(
+        currentProject.id,
+        currentTaskEditId,
+        taskTitleToEdit.value,
+        taskDescToEdit.value,
+        taskDueDateToEdit.value,
+        taskPrioToEdit.selectedIndex
+    );
+    clearTaskModalFields();
+    editTaskModal.style.display = "none";
+    displayMainContent(currentProject);
 }
 
 displayProjects();

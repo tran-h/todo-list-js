@@ -101,22 +101,10 @@ button:hover {
   padding: 1rem;
 }
 
-.closeTaskModal {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.closeTaskModal:hover,
-.closeTaskModal:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
 #closeAddProjModal,
-#closeEditProjModal {
+#closeEditProjModal,
+#closeAddTaskModalSpan,
+#closeEditTaskModalSpan {
   color: #aaa;
   float: right;
   font-size: 28px;
@@ -126,7 +114,11 @@ button:hover {
 #closeAddProjModal:hover,
 #closeAddProjModal:focus,
 #closeEditProjModal:hover,
-#closeEditProjModal:focus {
+#closeEditProjModal:focus,
+#closeAddTaskModalSpan:hover,
+#closeAddTaskModalSpan:focus,
+#closeEditTaskModalSpan:hover,
+#closeEditTaskModalSpan:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
