@@ -56,6 +56,12 @@ function displayMainContent(project) {
     tasksList.textContent = "";
 
     for (let taskIndex in project.tasks) {
+        const taskContainer = document.createElement("div");
+        taskContainer.classList.add("taskContainer");
+        const taskBtnContainer = document.createElement("div");
+        taskBtnContainer.classList.add("taskBtnContainer");
+        const taskInfoContainer = document.createElement("div");
+        taskInfoContainer.classList.add("taskInfoContainer");
         const div = document.createElement("div");
         div.classList.add("task");
         const taskTitle = document.createElement("p");
@@ -81,10 +87,8 @@ function displayMainContent(project) {
                 break;
         }
 
-        //TODO: fix overlapping edit button and position of task description
-        div.onclick = function () {
-            div.contains(taskDesc) ? taskDesc.remove() : div.append(taskDesc);
-        };
+        //TODO: add btn to see task desc
+        // taskContainer.contains(taskDesc) ? taskDesc.remove() : taskContainer.append(taskDesc);
 
         const editTaskBtn = document.createElement("button");
         editTaskBtn.textContent = "Edit";
@@ -103,14 +107,27 @@ function displayMainContent(project) {
             displayMainContent(project);
         }
 
-        //TODO: add functionality to check off task
+        taskInfoContainer.onclick = function () {
+            currentTaskId = project.tasks[taskIndex].id;
+            TaskModule.toggleTaskCompletion(project.tasks[taskIndex].projId, currentTaskId);
+            if (TaskModule.getTaskStatus(project.tasks[taskIndex].projId, currentTaskId)) {
+                taskInfoContainer.style.textDecoration = "line-through";
+                taskInfoContainer.style.opacity = 0.6;
+            }
+            else {
+                taskInfoContainer.style.textDecoration = "none";
+                taskInfoContainer.style.opacity = 1;
+            }
+        };
 
-        div.append(taskPrioColourIndicator);
-        div.append(taskTitle);
-        div.append(taskDueDate);
-        div.append(editTaskBtn);
-        div.append(deleteTaskBtn);
-        tasksList.append(div);
+        taskContainer.append(taskPrioColourIndicator);
+        taskInfoContainer.append(taskTitle);
+        taskInfoContainer.append(taskDueDate);
+        taskBtnContainer.append(editTaskBtn);
+        taskBtnContainer.append(deleteTaskBtn);
+        taskContainer.append(taskInfoContainer);
+        taskContainer.append(taskBtnContainer);
+        tasksList.append(taskContainer);
     }
 }
 

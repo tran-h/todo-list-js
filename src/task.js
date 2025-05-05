@@ -41,4 +41,16 @@ function getTaskIndex(projId, taskId) {
     });
 }
 
-export { format, getTask, addTask, removeTask, editTask, getTaskIndex }
+function toggleTaskCompletion(projId, taskId) {
+    const project = getProject(projId);
+    const taskIndex = getTaskIndex(projId, taskId);
+    project.tasks[taskIndex].completed = project.tasks[taskIndex].completed == true ? false : true;
+}
+
+function getTaskStatus(projId, taskId) {
+    const project = getProject(projId);
+    const taskIndex = getTaskIndex(projId, taskId);
+    return project.tasks[taskIndex].completed;
+}
+
+export { format, getTask, addTask, removeTask, editTask, getTaskIndex, toggleTaskCompletion, getTaskStatus }

@@ -96,7 +96,10 @@ button:hover {
   width: 30%;
 }
 
-input, textarea, select, option {
+input,
+textarea,
+select,
+option {
   color: black;
 }
 
@@ -134,14 +137,26 @@ input, textarea, select, option {
   gap: 1rem;
 }
 
-.task {
+.taskContainer {
   display: flex;
-  justify-content: space-between;
-  /* align-items: center; */
-  background-color: #262626;
 }
 
-div.task:hover {
-  opacity: 0.6;
-  cursor: pointer;
+.taskInfoContainer:hover {
+  opacity: 0.8 !important;
+  cursor: pointer !important;
+}
+
+.taskBtnContainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.taskInfoContainer {
+  display: flex;
+  width: 90%;
+  justify-content: space-between;
+  padding: 0 1rem;
+  margin-right: 1rem;
+  align-items: center;
+  background-color: #262626;
 }
