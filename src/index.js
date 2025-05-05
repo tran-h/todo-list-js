@@ -3,7 +3,7 @@ import * as ProjectModule from "./project.js";
 import * as TaskModule from "./task.js";
 
 let currentProject = ProjectModule.projects[0];
-let currentProjEditId, currentTaskEditId;
+let currentProjEditId, currentTaskId;
 
 //main content
 const projectsDiv = document.querySelector(".projects");
@@ -29,13 +29,13 @@ const submitEditProjModalBtn = document.querySelector("#submitEditProjModalBtn")
 const projTitleToAdd = document.querySelector("#projTitleToAdd");
 const projTitleToEdit = document.querySelector("#projTitleToEdit");
 
-//task modal
+//add task modal
 const addTaskModal = document.querySelector("#addTaskModal");
 const closeAddTaskModalSpan = document.querySelector("#closeAddTaskModalSpan");
 const cancelAddTaskModalBtn = document.querySelector("#cancelAddTaskModalBtn");
 const submitAddTaskModalBtn = document.querySelector("#submitAddTaskModalBtn");
 
-//task modal
+//edit task modal
 const editTaskModal = document.querySelector("#editTaskModal");
 const closeEditTaskModalSpan = document.querySelector("#closeEditTaskModalSpan");
 const cancelEditTaskModalBtn = document.querySelector("#cancelEditTaskModalBtn");
@@ -89,19 +89,27 @@ function displayMainContent(project) {
         const editTaskBtn = document.createElement("button");
         editTaskBtn.textContent = "Edit";
         editTaskBtn.onclick = function () {
-            currentTaskEditId = project.tasks[taskIndex].id;
+            currentTaskId = project.tasks[taskIndex].id;
             taskTitleToEdit.value = project.tasks[taskIndex].title;
             taskDescToEdit.value = project.tasks[taskIndex].desc;
             editTaskModal.style.display = "block";
         }
 
-        //TODO: add functionality to delete task
+        const deleteTaskBtn = document.createElement("button");
+        deleteTaskBtn.textContent = "Delete";
+        deleteTaskBtn.onclick = function () {
+            currentTaskId = project.tasks[taskIndex].id;
+            TaskModule.removeTask(project.tasks[taskIndex].projId, currentTaskId);
+            displayMainContent(project);
+        }
+
         //TODO: add functionality to check off task
 
         div.append(taskPrioColourIndicator);
         div.append(taskTitle);
         div.append(taskDueDate);
         div.append(editTaskBtn);
+        div.append(deleteTaskBtn);
         tasksList.append(div);
     }
 }
@@ -250,7 +258,7 @@ submitEditTaskModalBtn.onclick = function () {
     }
     TaskModule.editTask(
         currentProject.id,
-        currentTaskEditId,
+        currentTaskId,
         taskTitleToEdit.value,
         taskDescToEdit.value,
         taskDueDateToEdit.value,

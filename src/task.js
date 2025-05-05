@@ -36,10 +36,9 @@ function editTask(projId, taskId, title, desc, date, prio) {
 
 function getTaskIndex(projId, taskId) {
     const project = getProject(projId);
-    const taskIndex = project.findIndex(function (task) {
+    return project.tasks.findIndex(function (task) {
         return task.id === taskId;
     });
-    return taskIndex;
 }
 
 export { format, getTask, addTask, removeTask, editTask, getTaskIndex }
