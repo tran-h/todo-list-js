@@ -105,6 +105,9 @@ option {
 
 .modal-content p {
   padding: 1rem;
+  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 #closeAddProjModal,

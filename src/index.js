@@ -167,7 +167,6 @@ function displayProjects() {
     }
 }
 
-//TODO: fix modal styling
 //project related functions
 function clearProjectModalFields() {
     projTitleToAdd.value = "";
