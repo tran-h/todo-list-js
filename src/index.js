@@ -62,15 +62,13 @@ function displayMainContent(project) {
         taskBtnContainer.classList.add("taskBtnContainer");
         const taskInfoContainer = document.createElement("div");
         taskInfoContainer.classList.add("taskInfoContainer");
-        const div = document.createElement("div");
-        div.classList.add("task");
+        const taskDescDiv = document.createElement("div");
+        taskDescDiv.classList.add("taskDescDiv");
         const taskTitle = document.createElement("p");
-        const taskDesc = document.createElement("p");
         const taskDueDate = document.createElement("p");
         const taskPrioColourIndicator = document.createElement("div");
         taskPrioColourIndicator.style.width = "0.5rem";
         taskTitle.textContent = project.tasks[taskIndex].title;
-        taskDesc.textContent = project.tasks[taskIndex].desc;
         taskDueDate.textContent = `Due Date: ${project.tasks[taskIndex].dueDate}`;
 
         switch (project.tasks[taskIndex].prio) {
@@ -87,8 +85,18 @@ function displayMainContent(project) {
                 break;
         }
 
-        //TODO: add btn to see task desc
-        // taskContainer.contains(taskDesc) ? taskDesc.remove() : taskContainer.append(taskDesc);
+        const viewTaskBtn = document.createElement("button");
+        viewTaskBtn.textContent = "View";
+        viewTaskBtn.onclick = function () {
+            if (!tasksList.contains(taskDescDiv) && taskDescDiv.textContent == "") {
+                taskDescDiv.textContent = project.tasks[taskIndex].desc;
+                tasksList.insertBefore(taskDescDiv, taskContainer.nextSibling);
+            }
+            else {
+                taskDescDiv.textContent = "";
+                taskDescDiv.remove();
+            }
+        }
 
         const editTaskBtn = document.createElement("button");
         editTaskBtn.textContent = "Edit";
@@ -123,6 +131,7 @@ function displayMainContent(project) {
         taskContainer.append(taskPrioColourIndicator);
         taskInfoContainer.append(taskTitle);
         taskInfoContainer.append(taskDueDate);
+        taskBtnContainer.append(viewTaskBtn);
         taskBtnContainer.append(editTaskBtn);
         taskBtnContainer.append(deleteTaskBtn);
         taskContainer.append(taskInfoContainer);
