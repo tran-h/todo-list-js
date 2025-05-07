@@ -1,5 +1,7 @@
 # todo-list-js
-Todo List app written in plain JavaScript, HTML, and CSS.
+Todo List web app written in plain JavaScript, HTML, and CSS.
+
+This app allows users to maintain separate projects (groups) of tasks. Projects are able to be created, deleted, and edited (project name only) while tasks are able to be created, deleted, edited, and marked as completed. Tasks can also be clicked on to expand them, allowing users to view the task's description. Additionally, the app implements persistent storage through the Web Storage API, allowing users to be able to save their changes within their web browser.
 
 Live Demo: https://tran-h.github.io/todo-list-js/
 
