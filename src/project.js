@@ -40,7 +40,7 @@ const defaultProject = {
     ]
 };
 
-let projects = [defaultProject];
+let projects = JSON.parse(localStorage.getItem("projectsKey")) || [defaultProject];
 
 function getProject(projId) {
     return projects.find(function (project) {
@@ -57,6 +57,7 @@ function addProject(title) {
         project = Project(title);
         projects.push(project);
     }
+    localStorage.setItem("projectsKey", JSON.stringify(projects));
     return project;
 }
 
@@ -66,6 +67,7 @@ function removeProject(projId) {
         projects.splice(projectIndex, 1);
     }
     else alert("Default project cannot be deleted!");
+    localStorage.setItem("projectsKey", JSON.stringify(projects));
 }
 
 function editProject(projId, title) {
@@ -76,6 +78,7 @@ function editProject(projId, title) {
     else {
         const project = getProject(projId);
         project.title = title;
+        localStorage.setItem("projectsKey", JSON.stringify(projects));
         return true;
     }
 }

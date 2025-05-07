@@ -145,7 +145,8 @@ function displayMainContent(project) {
         taskBtnContainer.append(deleteTaskBtn);
         taskContainer.append(taskInfoContainer);
         taskContainer.append(taskBtnContainer);
-        tasksList.append(taskContainer);        
+        tasksList.append(taskContainer);
+        localStorage.setItem("projectsKey", JSON.stringify(ProjectModule.projects));
     }
 }
 
