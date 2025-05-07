@@ -85,6 +85,15 @@ function displayMainContent(project) {
                 break;
         }
 
+        if (TaskModule.getTaskStatus(project.tasks[taskIndex].projId, project.tasks[taskIndex].id)) {
+            taskInfoContainer.style.textDecoration = "line-through";
+            taskInfoContainer.style.opacity = 0.6;
+        }
+        else {
+            taskInfoContainer.style.textDecoration = "none";
+            taskInfoContainer.style.opacity = 1;
+        }
+
         const viewTaskBtn = document.createElement("button");
         viewTaskBtn.textContent = "View";
         viewTaskBtn.onclick = function () {
@@ -136,7 +145,7 @@ function displayMainContent(project) {
         taskBtnContainer.append(deleteTaskBtn);
         taskContainer.append(taskInfoContainer);
         taskContainer.append(taskBtnContainer);
-        tasksList.append(taskContainer);
+        tasksList.append(taskContainer);        
     }
 }
 
